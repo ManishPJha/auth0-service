@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserType {
+  Default
+  Google
+}
+
+model User {
+  id                              String         @id
+  email                           String         @unique
+  passwordHash                    String?
+  email_verified_date             DateTime?
+  email_verification_key          String?
+  email_verification_resend_token String?
+  email_verification_resend_date  DateTime?
+  first_name                      String         @db.VarChar(30)
+  last_name                       String         @db.VarChar(30)
+  is_confirmed                    Boolean        @default(false)
+  last_logged_in                  DateTime?
+  email_verify_to                 DateTime?
+  restore_password_to             DateTime?
+  restore_password_key            String?
+  roles                           Role           @relation(fields: [roleId], references: [id])
+  roleId                          Int
+  dob                             DateTime?
+  country                         String         @default("")
+  language                        String         @default("")
+  timezone                        String         @default("UTC")
+  categories                      String?
+  gender                          String         @default("")
+  employment_type                 String?
+  job_title                       String?
+  company                         String?
+  experience                      String?
+  graduation_year                 Int?
+  college                         String?
+  graduated_in                    String?
+  avatar                          String?
+  instructor                      Instructor?    @relation(fields: [instructor_id], references: [id])
+  instructor_id                   Int?           @unique
+  attendees                       Attendee[]
+  payments                        UserPayments[]
+  subscriptions                   Subscription[]
+  customer_id                     String?
+  created_date                    DateTime       @default(now())
+  updated_date                    DateTime       @updatedAt
+  deleted_date                    DateTime?
+  user_type                       UserType       @default(Default)
+  ctfd_user_id                    Int?           @unique
+  ctfd_user_token                 String?
+  number_of_watched_recordings    Int            @default(0)
+  is_banned                       Boolean        @default(false)
+  is_welcome_email_send           Boolean        @default(false)
+}
+
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String
+  users User[]
+}
+
+model Instructor {
+  id   Int   @id @default(autoincrement())
+  user User?
+}
+
+model Attendee {
+  id     Int    @id @default(autoincrement())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model UserPayments {
+  id     Int    @id @default(autoincrement())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Subscription {
+  id     Int    @id @default(autoincrement())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}

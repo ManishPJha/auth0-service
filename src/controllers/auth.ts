@@ -1,25 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
-<<<<<<< Updated upstream
-// import { prisma } from "../utils/prisma-client";
-
-export const resendVerificationEmail = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    return res.status(200).json({
-      success: true,
-      message: "Verification email resent successfully",
-      requestBody: req.body,
-    });
-  } catch (error) {
-    next(error);
-=======
 import { getM2MToken } from "../utils/auth-helpers";
 import { catchAsyncFnErrors } from "../utils/catchAsyncErrorhandler";
-import { prisma } from "../utils/prisma-client";
 
 export const generateAccessToken = catchAsyncFnErrors(
   async (req: Request, res: Response) => {
@@ -38,7 +20,6 @@ export const generateAccessToken = catchAsyncFnErrors(
       message: "Access token generated successfully",
       accessToken,
     });
->>>>>>> Stashed changes
   }
 );
 
@@ -92,7 +73,6 @@ export const handleUserPostCreation = async (
   next: NextFunction
 ) => {
   try {
-<<<<<<< Updated upstream
     // const isExist = await prisma.user.findFirst({ where: {
     //   id: data.user_id
     // } });
@@ -114,17 +94,6 @@ export const handleUserPostCreation = async (
     //     requestBody: req.body
     //   })
     // }
-=======
-    const data = req.body;
-
-    const isExist = await prisma.user.findFirst({
-      where: {
-        id: data.user_id,
-      },
-    });
-
-    if (isExist) return;
->>>>>>> Stashed changes
 
     return res.status(200).json({
       success: true,

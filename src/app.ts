@@ -1,6 +1,6 @@
-import express from "express";
-import cors from "cors";
 import bodyParser from "body-parser";
+import cors from "cors";
+import express from "express";
 
 // middlewares
 import errorMiddleware from "./middlewares/errorMiddleware";
@@ -25,7 +25,7 @@ app.get("*", (req, res) => {
     success: false,
     message: "Not Found",
   });
-})
+});
 
 app.use(errorMiddleware);
 
